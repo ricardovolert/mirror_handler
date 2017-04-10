@@ -1,8 +1,10 @@
 import git
 import hglib
+import logging
 import os
-from flask import Flask
-
+from tornado import gen
+from tornado.ioloop import IOLoop
+from tornado.web import RequestHandler, Application
 
 GH_REPO_PATH = os.environ.get('GH_REPO_PATH', '/tmp/yt-git')
 BB_REPO_PATH = os.environ.get('BB_REPO_PATH', '/tmp/yt-hg')
@@ -10,12 +12,9 @@ BB_REPO = os.environ.get('BB_REPO', 'https://bitbucket.org/ngoldbaum/yt')
 GH_REPO = os.environ.get(
     'GH_REPO', 'git+ssh://git@github.com:ngoldbaum/yt-mirror.git')
 
-app = Flask(__name__)
-app.config['DEBUG'] = False
 
-
-@app.route('/', methods=['POST'])
-def foo():
+@gen.coroutine
+def sync_repos():
     configs = ['extensions.hggit=']
     try:
         repo = hglib.open(BB_REPO_PATH, configs=configs)
@@ -42,4 +41,22 @@ def foo():
         origin = repo.remote('origin')
         origin.push('master')
 
-    return "OK"
+
+class MainHandler(RequestHandler):
+
+    @gen.coroutine
+    def post(self):
+        IOLoop.current().spawn_callback(sync_repos)
+        self.set_status(202)
+        self.finish()
+
+
+if __name__ == "__main__":
+    logging.getLogger().setLevel(logging.INFO)
+    handlers = [
+        (r"/", MainHandler),
+    ]
+
+    app = Application(handlers)
+    app.listen(5000)
+    IOLoop.current().start()
