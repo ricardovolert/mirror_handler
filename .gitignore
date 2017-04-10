@@ -1,1 +1,3 @@
 handle_mirror/
+*.pyc
+yt-hg/
