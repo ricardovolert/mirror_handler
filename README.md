@@ -18,8 +18,7 @@ Set the `REPO_PATH`, `BB_REPO`, and `GH_REPO` environment variables
 and execute run.sh: 
 
 ```
-REPO_PATH='./yt-hg' BB_REPO='https://bitbucket.org/yt_analysis/yt'
-GH_REPO=git+ssh://git@github.com/yt-project/yt ./run.sh
+REPO_PATH='./yt-hg' BB_REPO='https://bitbucket.org/yt_analysis/yt' GH_REPO=git+ssh://git@github.com/yt-project/yt ./run.sh
 ```
 
 Alternatively you can edit `handle_mirror_webhook.py` to use custom
