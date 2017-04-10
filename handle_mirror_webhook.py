@@ -16,15 +16,16 @@ BB_REPO = get_environment_variable('BB_REPO', 'https://bitbucket.org/ngoldbaum/y
 GH_REPO = get_environment_variable(
     'GH_REPO', 'git+ssh://git@github.com:ngoldbaum/yt-mirror.git')
 
-@app.route('/',methods=['POST'])
+@app.route('/', methods=['POST'])
 def foo():
+    configs = ['extensions.hgext.bookmarks=', 'extensions.hggit=']
     try:
-        repo = hglib.open(REPO_PATH)
+        repo = hglib.open(REPO_PATH, configs=configs)
         repo.close()
     except hglib.error.ServerError:
         hglib.clone(source=BB_REPO, dest=REPO_PATH)
 
-    with hglib.open(REPO_PATH) as repo:
+    with hglib.open(REPO_PATH, configs=configs) as repo:
         repo.pull(BB_REPO)
         repo.push(GH_REPO)
 

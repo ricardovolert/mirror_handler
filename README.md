@@ -28,3 +28,20 @@ Finally you will need to set up a new push webhook on the bitbucket
 repository. See [this
 page](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html)
 for more information.
+
+## Docker
+
+TODO: pass ssh credentials
+
+```
+docker run \
+  --rm -ti \
+  -e FLASK_APP=/app/handle_mirror_webhook.py \
+  -v $PWD:/app \
+  -p 5000:5000 \
+  jfloff/alpine-python:2.7-slim \
+    -a git \
+    -a mercurial \
+    -r /app/requirements.txt \
+      -- flask run --host=0.0.0.0
+```
