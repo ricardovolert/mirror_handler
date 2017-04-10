@@ -23,3 +23,8 @@ REPO_PATH='./yt-hg' BB_REPO='https://bitbucket.org/yt_analysis/yt' GH_REPO=git+s
 
 Alternatively you can edit `handle_mirror_webhook.py` to use custom
 hard-coded paths.
+
+Finally you will need to set up a new push webhook on the bitbucket
+repository. See [this
+page](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html)
+for more information.
