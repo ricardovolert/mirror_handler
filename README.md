@@ -37,8 +37,8 @@ export TOKEN=...  # Personal token with 'repo' scope
 
 docker run \
   --rm -ti \
-  -e BB_REPO_PATH=/tmp/yt-hg \
-  -e GH_REPO_PATH=/tmp/yt-git \
+  -e LOCAL_HG_REPO_PATH=/tmp/yt-hg \
+  -e LOCAL_GH_REPO_PATH=/tmp/yt-git \
   -e BB_REPO=https://bitbucket.org/yt_analysis/yt \
   -e GH_REPO=https://${TOKEN}@github.com/xarthisius/yt.git \
   -v $PWD:/app \
