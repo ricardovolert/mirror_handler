@@ -18,7 +18,8 @@ Set the `REPO_PATH`, `BB_REPO`, and `GH_REPO` environment variables
 and execute run.sh: 
 
 ```
-REPO_PATH='./yt-hg' BB_REPO='https://bitbucket.org/yt_analysis/yt' GH_REPO=git+ssh://git@github.com/yt-project/yt ./run.sh
+BB_REPO_PATH='./yt-hg' BB_REPO='https://bitbucket.org/yt_analysis/yt' \
+GH_REPO_PATH='./yt-git' GH_REPO=git+ssh://git@github.com/yt-project/yt ./run.sh
 ```
 
 Alternatively you can edit `handle_mirror_webhook.py` to use custom
@@ -31,17 +32,20 @@ for more information.
 
 ## Docker
 
-TODO: pass ssh credentials
-
 ```
+export TOKEN=...  # Personal token with 'repo' scope
+
 docker run \
   --rm -ti \
-  -e FLASK_APP=/app/handle_mirror_webhook.py \
+  -e LOCAL_HG_REPO_PATH=/tmp/yt-hg \
+  -e LOCAL_GH_REPO_PATH=/tmp/yt-git \
+  -e BB_REPO=https://bitbucket.org/yt_analysis/yt \
+  -e GH_REPO=https://${TOKEN}@github.com/xarthisius/yt.git \
   -v $PWD:/app \
   -p 5000:5000 \
   jfloff/alpine-python:2.7-slim \
     -a git \
     -a mercurial \
     -r /app/requirements.txt \
-      -- flask run --host=0.0.0.0
+      -- python /app/handle_mirror_webhook.py
 ```
