@@ -32,8 +32,6 @@ for more information.
 
 ## Docker
 
-TODO: pass ssh credentials
-
 ```
 export TOKEN=...  # Personal token with 'repo' scope
 
